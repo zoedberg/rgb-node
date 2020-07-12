@@ -80,7 +80,6 @@ pub fn schema() -> Schema {
             FieldType::TotalSupply => DataFormat::Unsigned(Bits::Bit64, 0, core::u64::MAX as u128),
             FieldType::Precision => DataFormat::Unsigned(Bits::Bit8, 0, 18u128),
             FieldType::IssuedSupply => DataFormat::Unsigned(Bits::Bit64, 0, core::u64::MAX as u128),
-            FieldType::DustLimit => DataFormat::Unsigned(Bits::Bit64, 0, core::u64::MAX as u128),
             FieldType::PruneProof => DataFormat::Bytes(core::u16::MAX),
             // While UNIX timestamps allow negative numbers; in context of RGB Schema, assets
             // can't be issued in the past before RGB or Bitcoin even existed; so we prohibit
@@ -102,10 +101,16 @@ pub fn schema() -> Schema {
                     AssignmentAction::Validate => script::Procedure::Standard(script::StandardProcedure::ConfidentialAmount)
                 }
             },
-            AssignmentsType::Prune => StateSchema {
+            AssignmentsType::Epoch => StateSchema {
                 format: StateFormat::Declarative,
                 abi: bmap! {
-                    AssignmentAction::Validate => script::Procedure::Standard(script::StandardProcedure::Prunning)
+                    AssignmentAction::Validate => script::Procedure::None
+                }
+            },
+            AssignmentsType::Replacement => StateSchema {
+                format: StateFormat::Declarative,
+                abi: bmap! {
+                    AssignmentAction::Validate => script::Procedure::Standard(script::StandardProcedure::Replacement)
                 }
             }
         },
@@ -122,8 +127,8 @@ pub fn schema() -> Schema {
             },
             defines: type_map! {
                 AssignmentsType::Issue => Occurences::NoneOrOnce,
+                AssignmentsType::Epoch => Occurences::NoneOrOnce,
                 AssignmentsType::Assets => Occurences::NoneOrUpTo(None),
-                AssignmentsType::Prune => Occurences::NoneOrUpTo(None)
             },
             abi: bmap! {},
         },
@@ -137,10 +142,10 @@ pub fn schema() -> Schema {
                 },
                 defines: type_map! {
                     AssignmentsType::Issue => Occurences::NoneOrOnce,
-                    AssignmentsType::Prune => Occurences::NoneOrUpTo(None),
+                    AssignmentsType::Epoch => Occurences::NoneOrOnce
                     AssignmentsType::Assets => Occurences::NoneOrUpTo(None)
                 },
-            abi: bmap! {}
+                abi: bmap! {}
             },
             TransitionType::Transfer => TransitionSchema {
                 metadata: type_map! {},
@@ -152,17 +157,28 @@ pub fn schema() -> Schema {
                 },
                 abi: bmap! {}
             },
-            TransitionType::Prune => TransitionSchema {
+            TransitionType::Epoch => TransitionSchema {
+                metadata: type_map! {},
+                closes: type_map! {
+                    AssignmentsType::Epoch => Occurences::Once
+                },
+                defines: type_map! {
+                    AssignmentsType::Epoch => Occurences::NoneOrOnce,
+                    AssignmentsType::Replacement => Occurences::NoneOrOnce,
+                },
+                abi: bmap! {}
+            },
+            TransitionType::Replacement => TransitionSchema {
                 metadata: type_map! {
+                    FieldType::IssuedSupply => Occurences::Once,
                     FieldType::PruneProof => Occurences::NoneOrUpTo(None)
                 },
                 closes: type_map! {
-                    AssignmentsType::Prune => Occurences::OnceOrUpTo(None),
-                    AssignmentsType::Assets => Occurences::OnceOrUpTo(None)
+                    AssignmentsType::Replacement => Occurences::Once
                 },
                 defines: type_map! {
-                    AssignmentsType::Prune => Occurences::NoneOrUpTo(None),
-                    AssignmentsType::Assets => Occurences::NoneOrUpTo(None)
+                    AssignmentsType::Replacement => Occurences::NoneOrOnce,
+                    AssignmentsType::Assets => Occurences::OnceOrUpTo(None)
                 },
                 abi: bmap! {}
             }
