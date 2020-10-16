@@ -17,9 +17,9 @@ dependencies = [
 
 [[package]]
 name = "amplify"
-version = "1.2.0"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f0ebe1cc10cc8b2665dd077e7f076b644e94f33577289ee61c7669d75286753"
+checksum = "147a917ced31ff0d8cccbd059746752279f326dae624e0b2fadc66be4a24a1ef"
 dependencies = [
  "async-trait",
  "ed25519-dalek",
@@ -30,9 +30,9 @@ dependencies = [
 
 [[package]]
 name = "amplify_derive"
-version = "1.2.0"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "57f080656cc1eb3d55c2446813e6197293f5d43b4cf52ffb1f6cb5ca18e0ac0b"
+checksum = "d7efe513fdba3fd0cb0f9020f185dea8c80df9c8641e464dbccc2f55d5611e92"
 dependencies = [
  "amplify",
  "quote 1.0.7",
@@ -128,7 +128,7 @@ version = "0.25.0"
 source = "git+https://github.com/LNP-BP/rust-bitcoin?tag=lnpbp-v0.1.0-rc1#dc06d451c01ef7b22509f0eb4db1f817e4e83daa"
 dependencies = [
  "bech32",
- "bitcoin_hashes",
+ "bitcoin_hashes 0.9.0",
  "secp256k1",
  "serde",
 ]
@@ -140,6 +140,12 @@ source = "git+https://github.com/LNP-BP/bitcoin_hashes?tag=lnpbp-v0.1.0-rc1#7269
 dependencies = [
  "serde",
 ]
+
+[[package]]
+name = "bitcoin_hashes"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ebd00960ed790b5f1726f22f3552929d93a2dd33c089b75eecba4d20097c558c"
 
 [[package]]
 name = "bitcoin_num"
@@ -804,14 +810,14 @@ checksum = "8dd5a6d5999d9907cda8ed67bbd137d3af8085216c2ac62de5be860bd41f304a"
 [[package]]
 name = "lnpbp"
 version = "0.1.0-rc.2"
-source = "git+https://github.com/LNP-BP/rust-lnpbp?branch=master#fc64fb48e7b169d77f6ec49efe4d9818dddd3ad6"
+source = "git+https://github.com/LNP-BP/rust-lnpbp?branch=master#82e56fb02191b40c1769022fb65bc823d165ab47"
 dependencies = [
  "amplify",
  "amplify_derive",
  "async-trait",
  "bech32",
  "bitcoin",
- "bitcoin_hashes",
+ "bitcoin_hashes 0.9.1",
  "bitcoin_num",
  "deflate",
  "ed25519-dalek",
@@ -833,7 +839,7 @@ dependencies = [
 [[package]]
 name = "lnpbp_derive"
 version = "0.1.0-rc.2"
-source = "git+https://github.com/LNP-BP/rust-lnpbp?branch=master#fc64fb48e7b169d77f6ec49efe4d9818dddd3ad6"
+source = "git+https://github.com/LNP-BP/rust-lnpbp?branch=master#82e56fb02191b40c1769022fb65bc823d165ab47"
 dependencies = [
  "amplify",
  "quote 1.0.7",
@@ -1545,18 +1551,18 @@ checksum = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
 
 [[package]]
 name = "serde"
-version = "1.0.116"
+version = "1.0.117"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96fe57af81d28386a513cbc6858332abc6117cfdb5999647c6444b8f43a370a5"
+checksum = "b88fa983de7720629c9387e9f517353ed404164b1e482c970a90c1a4aaf7dc1a"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.116"
+version = "1.0.117"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f630a6370fd8e457873b4bd2ffdae75408bc291ba72be773772a4c2a065d9ae8"
+checksum = "cbd1ae72adb44aab48f325a02444a5fc079349a8d804c1fc922aed3f7454c74e"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.7",
